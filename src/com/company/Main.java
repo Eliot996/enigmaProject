@@ -8,7 +8,7 @@ public class Main {
     private static final Scanner input = new Scanner(System.in);
 
     final static char[] ALPHABET = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-            'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å', ',', '.', '!', '?'};
+            'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'};
 
     public static void main(String[] args) {
 
@@ -47,97 +47,157 @@ public class Main {
             System.out.println("Vil du (e)ncrypte eller (d)ecrypte");
             char mode = input.nextLine().charAt(0);
             if (type.equals("n") && mode == 'e') {
-                numberCipherEncryptMenu();
+                numberCipherEncrypt();
             } else if (type.equals("n") && mode == 'd') {
-                numberCipherDecryptMenu();
+                numberCipherDecrypt();
             } else if (type.equals("s") && mode == 'e') {
-                shiftCipherEncryptMenu();
+                shiftCipherEncrypt();
             } else if (type.equals("s") && mode == 'd') {
-                shiftCipherDecryptMenu();
+                shiftCipherDecrypt();
             } else if (type.equals("p") && mode == 'e') {
-                polyalphabeticCipherEncryptMenu();
+                polyalphabeticCipherEncrypt();
             } else if (type.equals("p") && mode == 'd') {
-                polyalphabeticCipherDecryptMenu();
+                polyalphabeticCipherDecrypt();
             }
         }
     }
 
-    private static void numberCipherEncryptMenu() {
+    private static void numberCipherEncrypt() {
         String encoded;
         int[] ints;
 
         //get string from user
-        System.out.print("Du har valgt encode - indtast en tekst: ");
+        System.out.println("Du har valgt encrypt");
+        System.out.print("Indtast en tekst: ");
         String toEncode = input.nextLine();
 
         // convert string into an int array, and save it in ints
-        ints = toInts(toEncode.toUpperCase());
+        ints = textToNumbers(toEncode.toUpperCase());
 
         //convert ints to a string, and return the string
         encoded = toString(ints);
         System.out.println(encoded);
-
+        System.out.println();
     }
 
-    private static void numberCipherDecryptMenu() {
+    private static void numberCipherDecrypt() {
         String decoded, toDecode;
         int[] ints;
 
         // get input from user
-        System.out.print("Du har valgt decode - indtast en liste af tal: ");
+        System.out.println("Du har valgt decrypt ");
+        System.out.print("Indtast en liste af tal: ");
         toDecode = input.nextLine();
 
         // convert string to array of ints
         ints = stringToInts(toDecode);
 
         // convert to string, from indices
-        decoded = intsToString(ints);
+        decoded = numbersToText(ints);
         System.out.println(decoded);
+        System.out.println();
     }
 
-    private static void shiftCipherEncryptMenu() {
-        //TODO:
+    private static void shiftCipherEncrypt() {
+        String plainText, cipherText;
+        int[] plainNumbers, cipherNumbers;
+        int shift;
+
+        // get string to decrypt
+        System.out.println("Du har valgt encrypt");
+        System.out.print("Indtast en tekst: ");
+        plainText = input.nextLine();
+
         // get key
-        // get string to decrypt
+        System.out.print("Indtast shift nøglen: ");
+        shift = input.nextInt();
+        input.nextLine(); // FIX: to prevent scanner bug
+
         // convert string to ints
+        plainNumbers = textToNumbers(plainText.toUpperCase());
+
         // apply shift
+        cipherNumbers = shiftNumbers(plainNumbers, shift);
+
         // convert ints to string
+        cipherText = numbersToText(cipherNumbers);
+
         // output
+        System.out.println(cipherText);
     }
 
-    private static void shiftCipherDecryptMenu() {
-        //TODO:
+    private static void shiftCipherDecrypt() {
+        String plainText, cipherText;
+        int[] plainNumbers, cipherNumbers;
+        int shift;
+
+        // get string to decrypt
+        System.out.println("Du har valgt decrypt");
+        System.out.print("Indtast en tekst: ");
+        cipherText = input.nextLine();
+
         // get key
-        // get string to decrypt
+        System.out.print("Indtast shift nøglen: ");
+        shift = input.nextInt();
+        input.nextLine(); // FIX: to prevent scanner bug
+
+        // invert shift
+        shift = -shift;
+
         // convert string to ints
+        cipherNumbers = textToNumbers(cipherText.toUpperCase());
+
         // apply anti-shift
+        plainNumbers = shiftNumbers(cipherNumbers, shift);
+
         // convert ints to string
+        plainText = numbersToText(plainNumbers);
+
         // output
+        System.out.println(plainText);
     }
 
-    private static void polyalphabeticCipherEncryptMenu() {
-        //TODO:
-        // get keyword
-        // convert to ints
-        // get string to decrypt
-        // convert string to ints
-        // apply shift
-        // convert ints to string
-        // output
+    private static void polyalphabeticCipherEncrypt() {
+        // TODO: get keyword
+        // TODO: convert to ints
+        // TODO: get string to decrypt
+        // TODO: convert string to ints
+        // TODO: apply shift
+        // TODO: convert ints to string
+        // TODO: output
     }
 
-    private static void polyalphabeticCipherDecryptMenu() {
-        //TODO:
-        // get keyword
-        // convert to ints
-        // get string to decrypt
-        // convert string to ints
-        // apply anti-shift
-        // convert ints to string
-        // output
+    private static void polyalphabeticCipherDecrypt() {
+        // TODO: get keyword
+        // TODO: convert to ints
+        // TODO: get string to decrypt
+        // TODO: convert string to ints
+        // TODO: apply anti-shift
+        // TODO: convert ints to string
+        // TODO: output
     }
 
+    // run through numbers and call shiftNumber on them, and return new array with the new numbers
+    public static int[] shiftNumbers(int[] numbers, int shift) {
+        int[] shiftedNumbers = new int[numbers.length];
+        for (int i = 0; i < numbers.length; i++) {
+            shiftedNumbers[i] = shiftNumber(numbers[i], shift);
+        }
+        return shiftedNumbers;
+    }
 
+    // shift a number by shift amount, if larger than or equal to ALPHABET.length then subtract ALPHABET.length - 1
+    // (but not with spaces)
+    public static int shiftNumber(int number, int shift) {
+        if (number != 0) {
+            number += shift;
+        }
+
+        if (number >= ALPHABET.length) number -= ALPHABET.length - 1;
+
+        return number;
+
+    }
 
     // takes the patteren for the string of the int array, and converts it to an array of ints
     //TODO: make more consize, remove bloat
@@ -189,7 +249,7 @@ public class Main {
     }
 
     // converts an array of ints to the corresponding string of chars
-    public static String intsToString(int[] ints){
+    public static String numbersToText(int[] ints){
         // makes a StringBuilder, and appends the corresponding chars to the StringBuilder
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < ints.length; i++) {
@@ -199,19 +259,21 @@ public class Main {
     }
 
     // converts a string to an array of ints
-    public static int[] toInts(String text) {
+    // TODO: handle error (-1) from charToNumber
+    public static int[] textToNumbers(String text) {
         // create an array of ints, with the same size as the length of text
         int[] ints = new int[text.length()];
 
         // for each index of text, add the corresponding int into the respective place in the int array
         for (int i = 0; i < text.length(); i++) {
-            ints[i] = charToInt(text.charAt(i));
+
+            ints[i] = charToNumber(text.charAt(i));
         }
         return ints;
     }
 
     // takes a char and returns the index of that char in ALPHABET, else return -1
-    public static int charToInt(char charater) {
+    public static int charToNumber(char charater) {
         // loops through ALPHABET, until it finds the right value, and returns the index
         for (int i = 0; i < ALPHABET.length; i++) {
             if (charater == ALPHABET[i]) return i;

@@ -1,3 +1,8 @@
+# .class
 out/
+
+# .idea files, and intellij files
 .idea/
 *.iml
+
+src/test.java
