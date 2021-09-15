@@ -244,12 +244,19 @@ public class Main {
     public static int shiftNumber(int number, int shift) {
         if (number != 0) {
             number += shift;
+
+            // to move the number past the index of space
+            if (number <= 0){
+                number--;
+            }
         }
 
+        //loop if larger than lenght of ALPHBET
         if (number >= ALPHABET.length) number -= ALPHABET.length - 1;
 
+        // loop the other way, if smaller than ALPHBET
+        if (number < 0) number += ALPHABET.length;
         return number;
-
     }
 
     // takes the patteren for the string of the int array, and converts it to an array of ints
