@@ -187,7 +187,6 @@ public class Main {
     }
 
     private static void polyalphabeticCipherDecrypt() {
-
         String plainText, cipherText, keyword;
         int[] plainNumbers, cipherNumbers, keyInts;
 
@@ -254,7 +253,7 @@ public class Main {
     }
 
     // takes the patteren for the string of the int array, and converts it to an array of ints
-    //TODO: make more consize, remove bloat
+    //TODO: make simplify / refactor
     public static int[] stringToInts(String text){
         // creates an array, with the length of the text, because we cannot adjust the lenght of the array later.
         // therefore, it is better to have a larger array than neccesary, and adjust later
