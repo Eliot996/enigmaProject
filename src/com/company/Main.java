@@ -158,23 +158,66 @@ public class Main {
     }
 
     private static void polyalphabeticCipherEncrypt() {
-        // TODO: get keyword
-        // TODO: convert to ints
-        // TODO: get string to decrypt
-        // TODO: convert string to ints
-        // TODO: apply shift
-        // TODO: convert ints to string
-        // TODO: output
+        String plainText, cipherText, keyword;
+        int[] plainNumbers, cipherNumbers, keyInts;
+
+        // get string to decrypt
+        System.out.println("Du har valgt encrypt");
+        System.out.print("Indtast en tekst: ");
+        plainText = input.nextLine();
+
+        // get keyword
+        System.out.print("Indtast nøglenordet: ");
+        keyword = input.nextLine();
+
+        // convert to ints
+        keyInts = textToNumbers(keyword);
+
+        // convert string to ints
+        plainNumbers = textToNumbers(plainText.toUpperCase());
+
+        // apply shifts
+        cipherNumbers = shiftNumbers(plainNumbers, keyInts);
+
+        // convert ints to string
+        cipherText = numbersToText(cipherNumbers);
+
+        // output
+        System.out.println(cipherText);
     }
 
     private static void polyalphabeticCipherDecrypt() {
-        // TODO: get keyword
-        // TODO: convert to ints
-        // TODO: get string to decrypt
-        // TODO: convert string to ints
-        // TODO: apply anti-shift
-        // TODO: convert ints to string
-        // TODO: output
+
+        String plainText, cipherText, keyword;
+        int[] plainNumbers, cipherNumbers, keyInts;
+
+        // get string to decrypt
+        System.out.println("Du har valgt encrypt");
+        System.out.print("Indtast en tekst: ");
+        plainText = input.nextLine();
+
+        // get keyword
+        System.out.print("Indtast nøglenordet: ");
+        keyword = input.nextLine();
+
+        // convert keyword to ints, and invert
+        keyInts = textToNumbers(keyword);
+
+        for (int i = 0; i < keyInts.length; i++) {
+            keyInts[i] = -keyInts[i];
+        }
+
+        // convert string to ints
+        plainNumbers = textToNumbers(plainText.toUpperCase());
+
+        // apply shifts
+        cipherNumbers = shiftNumbers(plainNumbers, keyInts);
+
+        // convert ints to string
+        cipherText = numbersToText(cipherNumbers);
+
+        // output
+        System.out.println(cipherText);
     }
 
     // run through numbers and call shiftNumber on them, and return new array with the new numbers
@@ -182,6 +225,17 @@ public class Main {
         int[] shiftedNumbers = new int[numbers.length];
         for (int i = 0; i < numbers.length; i++) {
             shiftedNumbers[i] = shiftNumber(numbers[i], shift);
+        }
+        return shiftedNumbers;
+    }
+
+    public static int[] shiftNumbers(int[] numbers, int[] shifts) {
+        int[] shiftedNumbers = new int[numbers.length];
+        int indexOfShift = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            shiftedNumbers[i] = shiftNumber(numbers[i], shifts[indexOfShift]);
+            indexOfShift++;
+            if (indexOfShift >= shifts.length) indexOfShift = 0;
         }
         return shiftedNumbers;
     }
@@ -259,15 +313,18 @@ public class Main {
     }
 
     // converts a string to an array of ints
-    // TODO: handle error (-1) from charToNumber
     public static int[] textToNumbers(String text) {
         // create an array of ints, with the same size as the length of text
         int[] ints = new int[text.length()];
 
         // for each index of text, add the corresponding int into the respective place in the int array
         for (int i = 0; i < text.length(); i++) {
-
-            ints[i] = charToNumber(text.charAt(i));
+            int placeholder = charToNumber(text.charAt(i));
+                if (placeholder != -1){
+                    ints[i] = placeholder;
+                }else{
+                    ints[i] = 0;
+                }
         }
         return ints;
     }
