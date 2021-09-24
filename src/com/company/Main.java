@@ -171,7 +171,7 @@ public class Main {
         keyword = input.nextLine();
 
         // convert to ints
-        keyInts = textToNumbers(keyword);
+        keyInts = textToNumbers(keyword.toUpperCase());
 
         // convert string to ints
         plainNumbers = textToNumbers(plainText.toUpperCase());
